@@ -1,19 +1,38 @@
 import clsx from 'clsx';
-import React, { useState } from 'react'
-import { Link as LinkScroll } from 'react-scroll'
+import React, { useState, useEffect } from 'react';
+import { Link as LinkScroll } from 'react-scroll';
 
-const Navlink = ({ title }) => {
-    return (
-        <LinkScroll className='base-bold text-p4 uppercase transition-colors duration-500 hover:text-p1 cursor-pointer max-lg:my-4 max-lg:h5'>
-            {title}
-        </LinkScroll>
-    )
-};
 
 const Header = () => {
+    const [hasScrolled, setHasScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    useEffect(
+        () => {
+            const windowfun = () => {
+                setHasScrolled(window.scrollY > 32);
+            }
+            window.addEventListener('scroll', windowfun);
+            return () => {
+                window.removeEventListener(scroll, windowfun);
+            }
+        }, []
+    );
+
+    const Navlink = ({ title }) => {
+        return (
+            <LinkScroll
+                to={title}
+                offset={-100}
+                onClick={() => { setIsOpen(false) }}
+                spy={true}
+                smooth
+                className='base-bold text-p4 uppercase transition-colors duration-500 hover:text-p1 cursor-pointer max-lg:my-4 max-lg:h5'>
+                {title}
+            </LinkScroll>
+        )
+    };
     return (
-        <header className='fixed top-0 left-0 z-50 w-full py-10'>
+        <header className={clsx('fixed top-0 left-0 z-50 w-full py-10 transition-all duration-500 max-lg:py-4', hasScrolled && "fixed bg-black top-0 left-0 z-50 w-full py-2 backdrop-blur-[8px]")}>
             <div className='container flex h-14 items-center max-lg:px-5'>
                 {/* Logo is hidden for deskop */}
                 <a className='lg:hidden flex-1'>
@@ -35,6 +54,7 @@ const Header = () => {
                                 <li className='nav-logo'>
                                     <LinkScroll
                                         to="hero"
+                                        spy
                                         smooth={true}
                                         offset={-100}
                                         className={clsx("max-lg:hidden transition-transform duration-500 cursor-pointer")}>
