@@ -2,6 +2,7 @@ import './App.css'
 import Features from './sections/Features'
 import Header from './sections/Header'
 import Hero from './sections/Hero'
+import Pricing from './sections/Pricing'
 
 const App = () => {
 
@@ -11,6 +12,7 @@ const App = () => {
       <Header />
       <Hero />
       <Features />
+      <Pricing />
     </main>
   )
 }
